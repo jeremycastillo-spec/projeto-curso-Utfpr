@@ -2,15 +2,27 @@ let numeroSecreto;
 let campochute = document.getElementById("campochute") 
 let chutar = document.getElementById("chutar")
 let mensagem = document.getElementById(" mensagem ")
+var secaochute = document.getElementById("secao-chutes")
+var listadechute = document.getElementById("listaDeChute")
+
+
+var chutesDoUsuario = [];
+
 
 function iniciarjogo() {
   numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
+ chutesDoUsuario = [];
+
   mensagem.textContent = "";
   campochute.value ="" ;
   chutar.textContent = "chutar!" ;
-
+  console.log(campochute.disabled)
   campochute.disabled = false;
+
+ secaochute.style.display= 'none';
+ listadechute.textContent= '';
+
   campochute.focus();
   console.log(numeroSecreto);
    
@@ -30,6 +42,13 @@ if (isNaN(chute) || chute < 1 || chute > 100 ){
    campochute.value='';
    return;
 }
+
+chutesDoUsuario.push(chute);
+
+secaochute.style.display ='block';
+
+listadechute.textContent = chutesDoUsuario.join(', ')
+
  if(chute === numeroSecreto) {
  mensagem.textContent  = " Parabens, voce acertou o numero secreto " + numeroSecreto + " ! "
  mensagem.style.color = '#e5ff00ff';
@@ -49,11 +68,16 @@ console.log(chute)
 
 function finalizarjogo(){
     campochute.disabled = true ;
-    chutar.textContent = "jogar novamente! "
-
-    
-     chutar.removeEventListener("click", iniciarjogo);
-     chutar.addEventListener("click", verificarChute);
+    chutar.textContent = "jogar novamente! ";
+     chutar.addEventListener("click", iniciarjogo);
+     chutar.removeEventListener("click", verificarChute);
 
  }
+
+ campochute.addEventListener('keypress', function(evento){
+   if ( evento.key === 'Enter') {
+      verificarChute();
+   }
+ });
+
 iniciarjogo();
